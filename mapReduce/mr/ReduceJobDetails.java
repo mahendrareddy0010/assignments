@@ -1,4 +1,4 @@
-package mapReduce.mr;
+package mr;
 
 import java.io.Serializable;
 import java.util.List;

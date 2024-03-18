@@ -1,11 +1,11 @@
-package mapReduce.main;
+package main;
 
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 
-import mapReduce.mr.CoordinateRPCInterface;
-import mapReduce.mr.Worker;
-import mapReduce.mrApplication.WordCount;
+import mr.CoordinateRPCInterface;
+import mr.Worker;
+import mrApplication.WordCount;
 
 public class MapReduceWorker {
     public static void main(String[] args) {

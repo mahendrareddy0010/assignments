@@ -1,4 +1,4 @@
-package mapReduce.mr;
+package mr;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Random;
 
-import mapReduce.mrApplication.MapReduce;
+import mrApplication.MapReduce;
 
 public class Worker {
     MapReduce mapReduce;

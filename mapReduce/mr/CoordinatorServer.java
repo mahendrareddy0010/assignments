@@ -1,4 +1,4 @@
-package mapReduce.mr;
+package mr;
 
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;

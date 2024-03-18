@@ -1,8 +1,8 @@
-package mapReduce.mrApplication;
+package mrApplication;
 
 import java.util.List;
 
-import mapReduce.mr.KeyValue;
+import mr.KeyValue;
 
 public interface MapReduce {
     public List<KeyValue> map(String content);

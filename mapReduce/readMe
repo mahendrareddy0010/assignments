@@ -1,0 +1,17 @@
+--> Open the terminal in mapReduce directory
+--> `rm */*.class`
+--> `javac */*.java`
+
+Open 4 terminal in the mapReduce directory
+
+----------First------------
+Terminal-1: `java main.MapReduceCoordinator`
+
+----------Second-----------(any number of worker terminals as you wish)
+Terminal-2: `java main.MapReduceWorker`
+Terminal-3: `java main.MapReduceWorker`
+Terminal-4: `java main.MapReduceWorker`
+
+Note: First run ```MapReduceCoordinator``` then any number of ```MapReduceWorker```
+Note: You can do repeat, because I am deleting mr-out-*.txt files (output generated in previous excetions) are automatically deleting in code.
+      So, you don't have to delete it manually.

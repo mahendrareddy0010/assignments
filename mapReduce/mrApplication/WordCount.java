@@ -1,10 +1,10 @@
-package mapReduce.mrApplication;
+package mrApplication;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-import mapReduce.mr.KeyValue;
+import mr.KeyValue;
 
 public class WordCount implements MapReduce {
     static final Random random = new Random();

@@ -1,4 +1,4 @@
-package mapReduce.mr;
+package mr;
 
 public class KeyValue {
     String key;

@@ -1,4 +1,4 @@
-package mapReduce.mr;
+package mr;
 
 import java.io.File;
 import java.rmi.RemoteException;
