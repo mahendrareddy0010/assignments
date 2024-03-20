@@ -21,10 +21,10 @@ public class Server {
             registry.rebind("RaftNode", raftNodeSkelton);
 
             System.out.println("Raft Node is ready : " + myId);
-            if (myId == 1201) {
-                raftNodeSkelton.broadcastMsg("My name is - 1 :" + myId);
-                raftNodeSkelton.broadcastMsg("My name is - 2 :" + myId);
-            }
+            // if (myId == 1201) {
+            //     raftNodeSkelton.broadcastMsg("My name is - 1 :" + myId);
+            //     raftNodeSkelton.broadcastMsg("My name is - 2 :" + myId);
+            // }
         } catch (RemoteException e) {
             e.printStackTrace();
         }

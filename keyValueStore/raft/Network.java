@@ -10,6 +10,10 @@ import java.util.Map;
 import java.util.Random;
 import java.util.concurrent.ConcurrentHashMap;
 
+import raft.rpcMessages.LogRequestArgs;
+import raft.rpcMessages.NetworkCallResponse;
+import raft.rpcMessages.VoteRequestArgs;
+
 public class Network {
     Random random = new Random();
     int myId;
@@ -49,16 +53,17 @@ public class Network {
                     print("Connected : " + targetId);
                     break;
                 } catch (Exception e) {
-                    print("Exception  :" + e.getMessage());
+                    // print("Exception :" + e.getMessage());
                 }
             } catch (RemoteException e) {
-                print("Exception : " + e.getMessage());
+                // print("Exception : " + e.getMessage());
             }
             try {
-                // print("I will again try in 5-10 secs for " + targetId + " : " + Thread.currentThread().threadId()
-                //         + " : "
-                //         + System.currentTimeMillis() / 1000);
-                Thread.sleep(random.nextInt(5000, 10000));
+                // print("I will again try in 5-10 secs for " + targetId + " : " +
+                // Thread.currentThread().threadId()
+                // + " : "
+                // + System.currentTimeMillis() / 1000);
+                Thread.sleep(random.nextInt(100));
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
@@ -90,33 +95,32 @@ public class Network {
     }
 
     // blocking call
-    public NetworkCallResponse call(int targetId, String methodName, String msg) {
-        NetworkCallResponse response = new NetworkCallResponse("", false);
-        int attemptCount = 0;
-        while (attemptCount < 5) {
-            if (raftNodeObjects.get(targetId) != null) {
-                try {
-                    String res = raftNodeObjects.get(targetId).receiveMsg(msg);
+    public NetworkCallResponse call(int targetId, String methodName, Object msg) {
+        NetworkCallResponse response = new NetworkCallResponse(null, false);
 
-                    response = new NetworkCallResponse(res, true);
-                    break;
-                } catch (Exception e) {
-                    repairConnection(targetId);
+        if (raftNodeObjects.get(targetId) != null) {
+            try {
+                Object res = null;
+                if (methodName == "receiveMsg") {
+                    res = raftNodeObjects.get(targetId).receiveMsg((String) msg);
+                } else if (methodName == "voteRequest") {
+                    res = raftNodeObjects.get(targetId).voteRequest((VoteRequestArgs) msg);
+                } else if (methodName == "logRequest") {
+                    res = raftNodeObjects.get(targetId).logRequest((LogRequestArgs) msg);
+                } else {
+                    print("Send proper methodName");
                 }
-            } else {
+
+                response = new NetworkCallResponse(res, true);
+            } catch (Exception e) {
                 repairConnection(targetId);
             }
-            try {
-                // cooling period
-                Thread.sleep(random.nextInt(2000, 3000));
-            } catch (InterruptedException e) {
-            }
-            attemptCount += 1;
+        } else {
+            repairConnection(targetId);
         }
-        if (response.success == false) {
-            print("call was unsuccessfull : " + myId + " --> " + targetId);
+        if (response.isSuccess() == false) {
+            print("call was unsuccessfull : " + myId + " --> " + targetId + " type : " + methodName);
         }
         return response;
     }
-
 }
