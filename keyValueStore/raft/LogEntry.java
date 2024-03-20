@@ -29,6 +29,6 @@ public class LogEntry implements Serializable{
 
     @Override
     public String toString() {
-        return "msg : " + msg + "\n" + "term : " + term;
+        return msg + ":"+ term;
     }
 }

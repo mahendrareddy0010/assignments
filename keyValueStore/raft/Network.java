@@ -1,6 +1,5 @@
 package raft;
 
-import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
@@ -86,6 +85,7 @@ public class Network {
 
     // non-blocking call
     private synchronized void repairConnection(int targetId) {
+        print("targetId : " + targetId + " : " + repairStatus);
         if (repairStatus.get(targetId) == false) {
             repairStatus.put(targetId, true);
             Thread.ofVirtual().unstarted(() -> {
@@ -107,6 +107,10 @@ public class Network {
                     res = raftNodeObjects.get(targetId).voteRequest((VoteRequestArgs) msg);
                 } else if (methodName == "logRequest") {
                     res = raftNodeObjects.get(targetId).logRequest((LogRequestArgs) msg);
+                } else if (methodName == "broadcastMsg") {
+                    res = raftNodeObjects.get(targetId).broadcastMsg((String) msg);
+                } else if (methodName == "takeSnapShot") {
+                    res = raftNodeObjects.get(targetId).takeSnapShot();
                 } else {
                     print("Send proper methodName");
                 }

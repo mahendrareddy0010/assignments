@@ -13,6 +13,7 @@ import java.util.Set;
 import raft.rpcMessages.LogRequestArgs;
 import raft.rpcMessages.LogResponseArgs;
 import raft.rpcMessages.NetworkCallResponse;
+import raft.rpcMessages.RaftState;
 import raft.rpcMessages.VoteRequestArgs;
 import raft.rpcMessages.VoteResponseArgs;
 
@@ -218,7 +219,14 @@ public class RaftNodeImpl extends UnicastRemoteObject implements RaftNode {
         }).start();
     }
 
-    public synchronized void broadcastMsg(String msg) {
+    public synchronized RaftState takeSnapShot() {
+        // don't need to clone because it is synchronized, no one else would modify it now
+        RaftState raftState = new RaftState(currentTerm, votedFor, log, commitLength);
+
+        return raftState;
+    }
+
+    public synchronized Boolean broadcastMsg(String msg) {
         if (currentRole == Role.LEADER) {
             LogEntry logEntry = new LogEntry(msg, currentTerm);
             log.add(logEntry);
@@ -228,7 +236,10 @@ public class RaftNodeImpl extends UnicastRemoteObject implements RaftNode {
                     replicateLogTo(myId, followerId);
                 }
             }
+            return true;
         }
+
+        return false;
     }
 
     public synchronized LogResponseArgs logRequest(LogRequestArgs logRequestArgs) {
